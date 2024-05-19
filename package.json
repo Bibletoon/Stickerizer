@@ -46,6 +46,7 @@
     "graceful-fs": "^4.2.11",
     "handlebars": "^4.7.8",
     "has-flag": "^3.0.0",
+    "html-to-image": "^1.11.11",
     "http-proxy-agent": "^7.0.2",
     "https-proxy-agent": "^7.0.4",
     "ieee754": "^1.2.1",
@@ -67,7 +68,7 @@
     "neo-async": "^2.6.2",
     "netmask": "^2.0.2",
     "node-fetch": "^2.7.0",
-    "node-html-to-image": "^4.0.0",
+    "node-telegram-bot-api": "^0.65.1",
     "once": "^1.4.0",
     "pac-proxy-agent": "^7.0.1",
     "pac-resolver": "^7.0.1",
@@ -80,7 +81,7 @@
     "proxy-agent": "^6.3.0",
     "proxy-from-env": "^1.1.0",
     "pump": "^3.0.0",
-    "puppeteer": "^21.0.1",
+    "puppeteer": "^21.11.0",
     "puppeteer-cluster": "^0.23.0",
     "puppeteer-core": "^21.0.1",
     "queue-tick": "^1.0.1",
@@ -97,6 +98,7 @@
     "supports-color": "^5.5.0",
     "tar-fs": "^3.0.4",
     "tar-stream": "^3.1.7",
+    "telegraf": "^4.16.3",
     "through": "^2.3.8",
     "tr46": "^0.0.3",
     "tslib": "^2.6.2",
@@ -116,7 +118,8 @@
     "yauzl": "^2.10.0"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "npx ts-node src/index.ts"
   },
   "repository": {
     "type": "git",
@@ -131,5 +134,10 @@
   "bugs": {
     "url": "https://github.com/Bibletoon/Stickerizer/issues"
   },
-  "homepage": "https://github.com/Bibletoon/Stickerizer#readme"
+  "homepage": "https://github.com/Bibletoon/Stickerizer#readme",
+  "devDependencies": {
+    "@types/node-telegram-bot-api": "^0.64.6",
+    "ts-node": "^10.9.2",
+    "typescript": "^5.4.5"
+  }
 }

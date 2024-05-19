@@ -1,3 +1,6 @@
+import handlebars from "handlebars";
+
+const MessageHtml = `
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -37,8 +40,8 @@
         }
 
         .avatar-container {
-            width: 60px;
-            height: 60px;
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
             border: 2px solid white;
             margin-right: -10px;
@@ -46,21 +49,21 @@
         }
 
         .avatar {
-            width: 60px;
-            height: 60px;
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
         }
 
         .avatar-alt {
             background-color: var(--title-color);
             color: white;
-            width: 60px;
-            height: 60px;
+            width: 50px;
+            height: 50px;
             border-radius: 50%;
             text-align: center;
             font-family: system-ui, sans-serif;
             font-size: 50px;
-            line-height: 54px;
+            line-height: 44px;
         }
 
         .message {
@@ -135,7 +138,15 @@
 
     let scale = Math.min(ww / cw, wh / ch);
 
-    scaledContent.style.transform = `scale(${scale}, ${scale})`;
+    scaledContent.style.transform = 'scale('+scale+','+scale+')';
 </script>
 </body>
 </html>
+`
+
+handlebars.registerHelper('firstChar', (s: string) => s[0])
+handlebars.registerHelper('isEmpty', (s: string) => (!s || s.length === 0))
+
+const MessageTemplate = handlebars.compile(MessageHtml);
+
+export default MessageTemplate;
