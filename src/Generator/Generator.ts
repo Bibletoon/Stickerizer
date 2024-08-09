@@ -1,8 +1,6 @@
 import MessageTemplate from "./MessageTemplate";
 import {Cluster} from "puppeteer-cluster";
 
-let cluster : Cluster;
-
 type MessageParameters = {
     name: String,
     content: String,
@@ -10,34 +8,43 @@ type MessageParameters = {
     titleColor: String
 }
 
-const renderMessage = async (params: MessageParameters) : Promise<Buffer> => {
-    if (cluster == null) {
-        cluster = cluster = await Cluster.launch({
+class StickerGenerator {
+    private cluster: Cluster;
+
+    constructor(cluster: Cluster) {
+        this.cluster = cluster;
+    }
+
+    public static async create(): Promise<StickerGenerator> {
+        const cluster = await Cluster.launch({
             concurrency: Cluster.CONCURRENCY_CONTEXT,
             maxConcurrency: 16,
             timeout: 5000,
             puppeteerOptions: {'headless': 'new'}
         })
+
+        return new StickerGenerator(cluster)
     }
 
-    const html = MessageTemplate(params);
+    public async renderMessage(params: MessageParameters): Promise<Buffer> {
+        const html = MessageTemplate(params);
 
-    const buffer = await cluster.execute({
-        html
-    }, async ({ page, data }) => {
-        const {html} = data;
-        await page.setContent(html);
-        const element = await page.$('.container')
+        return await this.cluster.execute({
+            html
+        }, async ({page, data}) => {
+            const {html} = data;
+            await page.setContent(html);
+            const element = await page.$('.container')
 
-        if (element == null)
-            throw new Error('Invalid selector')
+            if (element == null)
+                throw new Error('Invalid selector')
 
-        return await element.screenshot({
-            type: 'webp',
-            omitBackground: true
-        })
-    })
-    return buffer;
+            return await element.screenshot({
+                type: 'webp',
+                omitBackground: true
+            })
+        });
+    }
 }
 
-export {renderMessage, MessageParameters}
+export {StickerGenerator, MessageParameters}
