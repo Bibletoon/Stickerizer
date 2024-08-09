@@ -1,31 +1,27 @@
 import {StickerGenerator} from "../Generator/Generator";
 import colorsMap from "../Styles/ColorsMap";
-import {InlineQuery, UserProfilePhotos} from "node-telegram-bot-api";
-const TelegramBot = require("node-telegram-bot-api");
+import {InlineQuery} from "node-telegram-bot-api";
+import AvatarLoader from "./AvatarLoader";
 
 /*
     План:
-    * Сделать нормальное ООП
-    * Докинуть кешей на аватарку
-    * Исправить сообщение о загрузке файла
     * Сделать нормальное логирование
+    * Сделать нормальные замеры времени
+    * Сделать трай кетч на хендлер
  */
 
-class Bot {
-    private readonly bot : any;
-    
-    constructor(private readonly token: String, private readonly stickerGenerator: StickerGenerator) {
-        this.bot = new TelegramBot(token, {
-            polling: true,
-            filepath: false
-        }) 
-        
+export default class InlineQueryHandler {
+    constructor(
+        private readonly bot: any,
+        private readonly stickerGenerator: StickerGenerator,
+        private readonly avatarLoader: AvatarLoader
+    ) {
         this.bot.on('inline_query', async (query: InlineQuery) => {
             console.log("inline_query", query);
             await this.handleInlineQuery(query);
         })
     }
-    
+
     private async handleInlineQuery(query: InlineQuery): Promise<void> {
         if (!query.query) {
             return
@@ -33,16 +29,8 @@ class Bot {
 
         console.log(`--- Start processind request ---`)
         const start = performance.now()
-        const userProfilePhotos : UserProfilePhotos = await this.bot.getUserProfilePhotos(query.from.id)
 
-        let avatarUrl: string = '';
-
-        if (userProfilePhotos.total_count > 0) {
-            const photo = userProfilePhotos.photos[0][0]
-            const file = await this.bot.getFile(photo.file_id)
-            avatarUrl = `https://api.telegram.org/file/bot${this.token}/${file.file_path}`
-        }
-
+        const avatarUrl = await this.avatarLoader.getAvatarUrl(query.from.id);
         const avatarLoad = performance.now()
         console.log(`Avatar load took ${avatarLoad - start}`)
 
@@ -64,7 +52,7 @@ class Bot {
             id: query.id,
             sticker_file_id: stickerMessage.sticker.file_id
         };
-        await this.bot.answerInlineQuery(query.id,[queryResult])
+        await this.bot.answerInlineQuery(query.id, [queryResult])
 
         const final = performance.now()
         console.log(`Query answer took ${final - stickerSend}`)
@@ -72,5 +60,3 @@ class Bot {
         console.log(`--- Finish processing request ---`)
     }
 }
-
-export {Bot}

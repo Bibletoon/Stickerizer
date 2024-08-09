@@ -4,6 +4,7 @@
   "description": "Simple Telegram bot for quote sticker generation",
   "main": "index.js",
   "dependencies": {
+    "@types/memory-cache": "^0.2.6",
     "agent-base": "^7.1.1",
     "ansi-regex": "^5.0.1",
     "ansi-styles": "^3.2.1",
@@ -61,6 +62,7 @@
     "jsonfile": "^6.1.0",
     "lines-and-columns": "^1.2.4",
     "lru-cache": "^7.18.3",
+    "memory-cache": "^0.2.0",
     "minimist": "^1.2.8",
     "mitt": "^3.0.1",
     "mkdirp-classic": "^0.5.3",
