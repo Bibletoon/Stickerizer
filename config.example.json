@@ -1,6 +1,7 @@
 {
   "bot": {
-    "token": ""
+    "token": "",
+    "bufferChatId": 0
   },
   "app": {
     "logLevel": "debug"

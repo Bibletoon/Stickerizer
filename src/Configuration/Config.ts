@@ -4,7 +4,8 @@ import * as z from "zod"
 
 const configSchema = z.object({
     bot: z.object({
-        token: z.string()
+        token: z.string(),
+        bufferChatId: z.number()
     }),
     app: z.object({
         logLevel: z.string().optional().default('info')

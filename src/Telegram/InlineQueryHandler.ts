@@ -5,12 +5,17 @@ import AvatarLoader from "./AvatarLoader";
 import {Logger} from "pino";
 import TimeMeasurer from "../TimeMeasure/TimeMeasurer";
 
-export default class InlineQueryHandler {
+type InlineQueryHandlerConfig = {
+    bufferChatId: number
+}
+
+class InlineQueryHandler {
     constructor(
         private readonly bot: any,
         private readonly stickerGenerator: StickerGenerator,
         private readonly avatarLoader: AvatarLoader,
         private readonly logger : Logger,
+        private readonly config: InlineQueryHandlerConfig,
         private readonly measurerFactory: () => TimeMeasurer
     ) {
         this.bot.on('inline_query', async (query: InlineQuery) => {
@@ -41,7 +46,7 @@ export default class InlineQueryHandler {
             )
 
             const stickerMessage = await timeMeasurer.MeasureAsync("stickerMessage", async () => 
-                this.bot.sendSticker(412750554, sticker)
+                this.bot.sendSticker(this.config.bufferChatId, sticker)
             )
 
             const queryResult = {
@@ -61,3 +66,5 @@ export default class InlineQueryHandler {
         
     }
 }
+
+export {InlineQueryHandler, InlineQueryHandlerConfig}

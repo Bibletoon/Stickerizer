@@ -1,4 +1,4 @@
-import InlineQueryHandler from "./Telegram/InlineQueryHandler";
+import {InlineQueryHandler, InlineQueryHandlerConfig} from "./Telegram/InlineQueryHandler";
 import {StickerGenerator} from "./Generator/Generator";
 import AvatarLoader from "./Telegram/AvatarLoader";
 import InMemoryCacheProvider from "./Cache/InMemoryCacheProvider";
@@ -28,6 +28,7 @@ void async function main() {
         stickerGenerator, 
         avatarLoader, 
         logger, 
+        config.bot,
         () => new LocalTimeMeasurer(logger))
     logger.info("Bot started") 
 }()
