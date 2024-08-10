@@ -13,14 +13,14 @@ class LocalTimeMeasurer implements TimeMeasurer {
         const startTime = performance.now();
         const result = func()
         const duration = performance.now() - startTime
-        this.logger.info(this.scope, "Step %s took %s ms", stepName, duration);
+        this.logger.debug(this.scope, "Step %s took %s ms", stepName, duration);
         return result
     }
     async MeasureAsync<T>(stepName: string, func: () => Promise<T>): Promise<T> {
         const startTime = performance.now()
         const result = await func()
         const duration = performance.now() - startTime
-        this.logger.info(this.scope, "Step %s took %s ms", stepName, duration);
+        this.logger.debug(this.scope, "Step %s took %s ms", stepName, duration);
         return result
     }
 }
