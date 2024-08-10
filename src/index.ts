@@ -1,4 +1,4 @@
-import {InlineQueryHandler, InlineQueryHandlerConfig} from "./Telegram/InlineQueryHandler";
+import {InlineQueryHandler} from "./Telegram/InlineQueryHandler";
 import {StickerGenerator} from "./Generator/Generator";
 import AvatarLoader from "./Telegram/AvatarLoader";
 import InMemoryCacheProvider from "./Cache/InMemoryCacheProvider";
