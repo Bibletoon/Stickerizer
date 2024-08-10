@@ -2,10 +2,10 @@ import {StickerGenerator} from "../Generator/Generator";
 import colorsMap from "../Styles/ColorsMap";
 import {InlineQuery} from "node-telegram-bot-api";
 import AvatarLoader from "./AvatarLoader";
+import {Logger} from "pino";
 
 /*
     План:
-    * Сделать нормальное логирование
     * Сделать нормальные замеры времени
     * Сделать трай кетч на хендлер
  */
@@ -14,10 +14,10 @@ export default class InlineQueryHandler {
     constructor(
         private readonly bot: any,
         private readonly stickerGenerator: StickerGenerator,
-        private readonly avatarLoader: AvatarLoader
+        private readonly avatarLoader: AvatarLoader,
+        private readonly logger : Logger
     ) {
         this.bot.on('inline_query', async (query: InlineQuery) => {
-            console.log("inline_query", query);
             await this.handleInlineQuery(query);
         })
     }
@@ -26,37 +26,31 @@ export default class InlineQueryHandler {
         if (!query.query) {
             return
         }
+        const logger = this.logger.child({"query_id": query.id})
+        logger.info("start handling query from %s", query.from.id, query.query);
+        
+        try {
+            const avatarUrl = await this.avatarLoader.getAvatarUrl(query.from.id);
 
-        console.log(`--- Start processind request ---`)
-        const start = performance.now()
+            const sticker = await this.stickerGenerator.renderMessage({
+                name: query.from.first_name,
+                content: query.query,
+                titleColor: colorsMap[query.from.id % 7],
+                avatarUrl: avatarUrl
+            })
 
-        const avatarUrl = await this.avatarLoader.getAvatarUrl(query.from.id);
-        const avatarLoad = performance.now()
-        console.log(`Avatar load took ${avatarLoad - start}`)
+            const stickerMessage = await this.bot.sendSticker(412750554, sticker)
 
-        const sticker = await this.stickerGenerator.renderMessage({
-            name: query.from.first_name,
-            content: query.query,
-            titleColor: colorsMap[query.from.id % 7],
-            avatarUrl: avatarUrl
-        })
-        const stickerGeneration = performance.now()
-        console.log(`Sticker generation took ${stickerGeneration - avatarLoad}`)
-
-        const stickerMessage = await this.bot.sendSticker(412750554, sticker)
-        const stickerSend = performance.now()
-        console.log(`Sticker send took ${stickerSend - stickerGeneration}`)
-
-        const queryResult = {
-            type: "sticker",
-            id: query.id,
-            sticker_file_id: stickerMessage.sticker.file_id
-        };
-        await this.bot.answerInlineQuery(query.id, [queryResult])
-
-        const final = performance.now()
-        console.log(`Query answer took ${final - stickerSend}`)
-        console.log(`Total duration ${final - start}`)
-        console.log(`--- Finish processing request ---`)
+            const queryResult = {
+                type: "sticker",
+                id: query.id,
+                sticker_file_id: stickerMessage.sticker.file_id
+            };
+            await this.bot.answerInlineQuery(query.id, [queryResult])
+            logger.info("end handling query from %s", query.from.id)
+        } catch () {
+            lo
+        }
+        
     }
 }
