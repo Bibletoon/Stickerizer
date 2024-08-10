@@ -11,7 +11,7 @@ const TelegramBot = require("node-telegram-bot-api");
 process.env.NTBA_FIX_350 = "1";
 
 void async function main() {
-    const config = await readConfig(["config.json", "config.secrets.json"])
+    const config = await readConfig(["config.json"])
     
     const logger : Logger = pino()
     logger.level = config.app.logLevel;
