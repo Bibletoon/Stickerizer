@@ -7,7 +7,8 @@ import pino, {Logger} from "pino"
 import LocalTimeMeasurer from "./TimeMeasure/LocalTimeMeasurer";
 
 process.env.NTBA_FIX_350 = "1";
-const token = '7169711607:AAHotQQ1kDkOKB_nvHBfc8Bk1Fg_O7TGp_A'
+const token = process.env.TOKEN;
+
 
 void async function main() {
     const logger : Logger = pino()
