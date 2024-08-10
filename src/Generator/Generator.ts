@@ -1,5 +1,6 @@
 import MessageTemplate from "./MessageTemplate";
 import {Cluster} from "puppeteer-cluster";
+const locateChrome = require('locate-chrome');
 
 type MessageParameters = {
     name: String,
@@ -16,11 +17,17 @@ class StickerGenerator {
     }
 
     public static async create(): Promise<StickerGenerator> {
+        const executablePath: string = await new Promise(resolve => locateChrome((arg: any) => resolve(arg))) || '';
+        
         const cluster = await Cluster.launch({
             concurrency: Cluster.CONCURRENCY_CONTEXT,
             maxConcurrency: 16,
             timeout: 5000,
-            puppeteerOptions: {'headless': 'new'}
+            puppeteerOptions: {
+                executablePath,
+                args: ['--no-sandbox', '--disable-setuid-sandbox'],
+                headless: 'new'
+            }
         })
 
         return new StickerGenerator(cluster)
