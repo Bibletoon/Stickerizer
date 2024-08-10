@@ -8,7 +8,7 @@ Simple Telegram bot for quote sticker generation
 2. Prepare configuration in `config.json` file
    * `token` - token from BotFather
    * `bufferChatId` -  chat or user id where bot can write. It will be used to transform image to sticker
-3. Start bot
+3. Start bot via `npm run start`
 
 ### Usage:
 
