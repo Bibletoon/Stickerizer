@@ -1,1 +1,4 @@
 ﻿config.json
+node_modules
+docs
+Readme.md

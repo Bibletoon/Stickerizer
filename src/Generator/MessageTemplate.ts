@@ -19,7 +19,7 @@ const MessageHtml = `
             margin: 0;
             padding: 0;
             border: 0;
-            font-family: system-ui, sans-serif;
+            font-family: 'Open Sans', sans-serif;
             font-size: 20px;
         }
 
@@ -61,9 +61,9 @@ const MessageHtml = `
             height: 50px;
             border-radius: 50%;
             text-align: center;
-            font-family: system-ui, sans-serif;
-            font-size: 50px;
-            line-height: 44px;
+            font-family: 'Open Sans', sans-serif;
+            font-size: 40px;
+            line-height: 48px;
         }
 
         .message {
@@ -103,7 +103,7 @@ const MessageHtml = `
 
         .title {
             color: var(--title-color);
-            font-weight: 500;
+            font-weight: 600;
         }
     </style>
     <title>Document</title>
