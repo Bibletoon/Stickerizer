@@ -1,6 +1,6 @@
 {
   "name": "stickerizer",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Simple Telegram bot for quote sticker generation",
   "main": "index.js",
   "dependencies": {
