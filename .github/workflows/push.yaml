@@ -26,6 +26,8 @@ jobs:
         with:
           check-last-commit-only: true
         env:
-          GITHUB_TOKEN: ${{ secrets.TOKEN }}
+          GITHUB_USER: bibletoon
+          GITHUB_EMAIL: alex8.ivanov@gmail.com
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: "cat package.json"
         run: cat ./package.json
