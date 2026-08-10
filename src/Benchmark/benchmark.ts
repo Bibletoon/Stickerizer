@@ -37,7 +37,7 @@ async function runSequential(generator: StickerGenerator): Promise<void> {
             }
         }
 
-        console.log(`Scenario: ${scenario.name}`)
+        console.log(`Scenario: ${scenario.name} (${totalDurations.length}/${MEASURED_ITERATIONS} succeeded)`)
         if (totalDurations.length === 0) {
             console.log("  no successful runs")
             continue
@@ -77,8 +77,9 @@ async function runConcurrent(generator: StickerGenerator): Promise<void> {
         totalRequests += CONCURRENT_LEVEL
     }
 
-    const throughput = totalRequests / (totalWallMs / 1000)
-    console.log(`Throughput: ${throughput.toFixed(2)} renders/sec (${totalRequests} requests over ${(totalWallMs / 1000).toFixed(2)}s wall time)`)
+    const succeeded = allLatencies.length
+    const throughput = succeeded / (totalWallMs / 1000)
+    console.log(`Throughput: ${throughput.toFixed(2)} renders/sec (${succeeded}/${totalRequests} requests succeeded over ${(totalWallMs / 1000).toFixed(2)}s wall time)`)
     console.log("  " + formatStatsRow("latency under load", computeStats(allLatencies)))
 }
 
