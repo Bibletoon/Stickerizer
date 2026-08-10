@@ -43,7 +43,7 @@ Per inline query (`src/Telegram/InlineQueryHandler.ts`):
 Fetches the user's first profile photo via the Bot API, resolves it to a `https://api.telegram.org/file/bot<token>/<path>` URL, then downloads the bytes and caches them as a `data:` URI. Results are cached (`src/Cache/`, `InMemoryCacheProvider` using `memory-cache`, 1h TTL) keyed by Telegram user id, since profile photos rarely change and this avoids both a Bot API round trip and an in-browser network fetch per query — embedding the image inline lets the render step's `page.setContent()` resolve without waiting on an external image load. A failed avatar fetch degrades gracefully to `''` (falls back to the initial-letter avatar in the template) rather than failing the render.
 
 ### Cache and time-measurement abstractions
-`CacheProvider<TKey, TValue>` and `TimeMeasurer` are small interfaces with a single concrete implementation each (`InMemoryCacheProvider`, `LocalTimeMeasurer`). If extending these, keep new implementations behind the same interface rather than changing call sites.
+`CacheProvider<TKey, TValue>` is a small interface with a single concrete implementation (`InMemoryCacheProvider`). `TimeMeasurer` has two: `LocalTimeMeasurer` (production — logs step durations to pino) and `CollectingTimeMeasurer` (`src/TimeMeasure/CollectingTimeMeasurer.ts` — collects durations in memory for `getDurations(stepName)`, used by `npm run benchmark`). If extending these, keep new implementations behind the same interface rather than changing call sites.
 
 ## Docker
 
