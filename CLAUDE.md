@@ -10,6 +10,7 @@ Stickerizer is a Telegram bot (TypeScript/Node.js) that generates "quote sticker
 
 - `npm run start` — run the bot directly via `ts-node src/index.ts` (no compile step needed for dev)
 - `npm run build` — compile TypeScript to `dist/` via `tsc`
+- `npm run benchmark` — run `src/Benchmark/benchmark.ts`: exercises `StickerGenerator.renderMessage` in isolation (no bot token/`config.json` needed) with fixed scenarios, in both sequential (per-request latency) and concurrent (throughput under `maxConcurrency`-level load) modes — use this to measure the effect of rendering-pipeline changes before/after
 - There is no test suite configured (`npm test` is a stub that exits with an error) and no lint script
 
 ## Configuration
