@@ -52,7 +52,8 @@ class InlineQueryHandler {
             const queryResult = {
                 type: "sticker",
                 id: query.id,
-                sticker_file_id: stickerMessage.sticker.file_id
+                sticker_file_id: stickerMessage.sticker.file_id,
+                is_personal: true
             };
             
             await timeMeasurer.MeasureAsync("queryAnswer", async () => 
