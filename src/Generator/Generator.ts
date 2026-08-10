@@ -56,6 +56,10 @@ class StickerGenerator {
                 }))
         });
     }
+
+    public async close(): Promise<void> {
+        await this.cluster.close()
+    }
 }
 
 export {StickerGenerator, MessageParameters}
