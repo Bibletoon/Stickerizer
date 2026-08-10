@@ -48,7 +48,6 @@
     "graceful-fs": "^4.2.11",
     "handlebars": "^4.7.8",
     "has-flag": "^3.0.0",
-    "html-to-image": "^1.11.11",
     "http-proxy-agent": "^7.0.2",
     "https-proxy-agent": "^7.0.4",
     "ieee754": "^1.2.1",
@@ -143,6 +142,7 @@
   },
   "homepage": "https://github.com/Bibletoon/Stickerizer#readme",
   "devDependencies": {
+    "@types/node-fetch": "^2.6.13",
     "@types/node-telegram-bot-api": "^0.64.6",
     "ts-node": "^10.9.2",
     "typescript": "^5.4.5"

@@ -42,7 +42,7 @@ class InlineQueryHandler {
                     name: query.from.first_name,
                     content: query.query,
                     titleColor: colorsMap[query.from.id % 7],
-                    avatarUrl: avatarUrl})
+                    avatarUrl: avatarUrl}, timeMeasurer)
             )
 
             const stickerMessage = await timeMeasurer.MeasureAsync("stickerMessage", async () => 

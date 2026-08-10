@@ -1,5 +1,6 @@
 import MessageTemplate from "./MessageTemplate";
 import {Cluster} from "puppeteer-cluster";
+import TimeMeasurer from "../TimeMeasure/TimeMeasurer";
 const locateChrome = require('locate-chrome');
 
 type MessageParameters = {
@@ -20,7 +21,7 @@ class StickerGenerator {
         const executablePath: string = await new Promise(resolve => locateChrome((arg: any) => resolve(arg))) || '';
         
         const cluster = await Cluster.launch({
-            concurrency: Cluster.CONCURRENCY_CONTEXT,
+            concurrency: Cluster.CONCURRENCY_PAGE,
             maxConcurrency: 16,
             timeout: 5000,
             puppeteerOptions: {
@@ -33,23 +34,26 @@ class StickerGenerator {
         return new StickerGenerator(cluster)
     }
 
-    public async renderMessage(params: MessageParameters): Promise<Buffer> {
+    public async renderMessage(params: MessageParameters, timeMeasurer: TimeMeasurer): Promise<Buffer> {
         const html = MessageTemplate(params);
 
         return await this.cluster.execute({
-            html
+            html,
+            timeMeasurer
         }, async ({page, data}) => {
-            const {html} = data;
-            await page.setContent(html);
+            const {html, timeMeasurer} = data;
+            await timeMeasurer.MeasureAsync("setContent", () =>
+                page.setContent(html, {waitUntil: 'domcontentloaded'}))
             const element = await page.$('.container')
 
             if (element == null)
                 throw new Error('Invalid selector')
 
-            return await element.screenshot({
-                type: 'webp',
-                omitBackground: true
-            })
+            return await timeMeasurer.MeasureAsync("screenshot", () =>
+                element.screenshot({
+                    type: 'webp',
+                    omitBackground: true
+                }))
         });
     }
 }

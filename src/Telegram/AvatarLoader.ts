@@ -1,5 +1,6 @@
 ﻿import {UserProfilePhotos} from "node-telegram-bot-api";
 import CacheProvider from "../Cache/CacheProvider";
+import fetch from "node-fetch";
 
 class AvatarLoader {
     constructor(
@@ -28,7 +29,16 @@ class AvatarLoader {
 
         const photo = userProfilePhotos.photos[0][0]
         const file = await this.bot.getFile(photo.file_id)
-        return `https://api.telegram.org/file/bot${this.token}/${file.file_path}`
+        const fileUrl = `https://api.telegram.org/file/bot${this.token}/${file.file_path}`
+
+        try {
+            const response = await fetch(fileUrl)
+            const contentType = response.headers.get('content-type') ?? 'image/jpeg'
+            const buffer = await response.buffer()
+            return `data:${contentType};base64,${buffer.toString('base64')}`
+        } catch {
+            return ''
+        }
     }
 }
 
