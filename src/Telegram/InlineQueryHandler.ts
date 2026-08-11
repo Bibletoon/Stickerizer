@@ -34,7 +34,7 @@ class InlineQueryHandler {
         
         try {
             const avatarUrl = await timeMeasurer.MeasureAsync("avatarLoad", async () => 
-                this.avatarLoader.getAvatarUrl(query.from.id)
+                this.avatarLoader.getAvatarBase64(query.from.id)
             )
 
             const sticker = await timeMeasurer.MeasureAsync("stickerGeneration", async () =>

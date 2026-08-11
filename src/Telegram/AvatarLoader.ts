@@ -10,7 +10,7 @@ class AvatarLoader {
     ) {
     }
     
-    public async getAvatarUrl(user_id: number) : Promise<string> {
+    public async getAvatarBase64(user_id: number) : Promise<string> {
         let avatar = this.cacheProvider.get(user_id)
         if (avatar == null) {
             avatar = await this.loadAvatar(user_id)
